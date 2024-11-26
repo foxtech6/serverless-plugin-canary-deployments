@@ -281,7 +281,6 @@ class ServerlessCanaryDeployments {
         _.includes(functionName)
       )
     }
-    
     const getMethodsForFunction = _.pipe(
       _.pickBy(isApiGMethod),
       _.pickBy(isMethodForFunction)
