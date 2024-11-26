@@ -273,11 +273,15 @@ class ServerlessCanaryDeployments {
 
   getApiGatewayV2MethodsFor (functionName) {
     const isApiGMethod = _.matchesProperty('Type', 'AWS::ApiGatewayV2::Integration')
-    const isMethodForFunction = _.pipe(
-      _.prop('Properties.IntegrationUri'),
-      flattenObject,
-      _.includes(functionName)
-    )
+    let isMethodForFunction = _.has('Properties.IntegrationUri')
+    if (isMethodForFunction) {
+      isMethodForFunction = _.pipe(
+        _.prop('Properties.IntegrationUri'),
+        flattenObject,
+        _.includes(functionName)
+      )
+    }
+    
     const getMethodsForFunction = _.pipe(
       _.pickBy(isApiGMethod),
       _.pickBy(isMethodForFunction)
